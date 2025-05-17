@@ -51,7 +51,6 @@
             font-size: 0.9rem;
             margin-bottom: 1rem;
         }
-        /* Removed .json-container as the script and its content are removed */
         /* Responsive adjustments */
         @media (max-width: 768px) {
             .blog-container {
@@ -245,18 +244,68 @@
         </section>
 
         <section>
-            <h2 class="section-title">My Introduction to Artificial Intelligence Final Project</h2>
-            <p class="note">The following is the result of cramming and energy drink-fueled-allnighters.</p>
-            <p class="note">A random html page with a chatbot :D</p>
-            </section>
-
+            <h2 class="section-title">My Chatbot Model Configuration</h2>
+            <p class="note">The following is the JSON configuration for the chatbot model provided (from 2 Chatflow.json). The script to display it has been removed as per your request.</p>
+        </section>
     </div>
-    </body>
+
+    <button id="customChatbotButton" title="Open AI Chatbot" class="fixed bottom-5 right-5 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-full shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors z-50">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+            <path fill-rule="evenodd" d="M4.804 21.644A6.707 6.707 0 0 0 6 21.75a6.75 6.75 0 0 0 6.75-6.75V9a.75.75 0 0 1 1.5 0v6A6.75 6.75 0 0 0 21 21.75c.243 0 .482-.017.716-.052a.75.75 0 0 1 .284 1.448A9.707 9.707 0 0 1 18 23.25a9.75 9.75 0 0 1-9.75-9.75V9A.75.75 0 0 0 6.75 9v4.5a9.75 9.75 0 0 1-6.412 9.043.75.75 0 0 1 .466-1.399Z" clip-rule="evenodd" />
+            <path d="M1.5 9.75a.75.75 0 0 1 .75-.75h19.5a.75.75 0 0 1 0 1.5H2.25a.75.75 0 0 1-.75-.75Z" />
+            <path fill-rule="evenodd" d="M8.25 6.75a3.75 3.75 0 1 0 7.5 0h-7.5ZM12 7.5a2.25 2.25 0 1 0 0-4.5 2.25 2.25 0 0 0 0 4.5Z" clip-rule="evenodd" />
+        </svg>
+         <span class="sr-only">Open Chatbot</span>
+    </button>
+
     <script type="module">
-    import Chatbot from "https://cdn.jsdelivr.net/npm/flowise-embed/dist/web.js"
-    Chatbot.init({
-        chatflowid: "396d6e8e-5fea-4040-9099-38e22a70438a",
-        apiHost: "https://cdoiii-finalai.hf.space",
-    })
-</script>
+        // Import the Chatbot library from CDN
+        import Chatbot from "https://cdn.jsdelivr.net/npm/flowise-embed/dist/web.js";
+
+        // Initialize the Chatbot
+        Chatbot.init({
+            chatflowid: "396d6e8e-5fea-4040-9099-38e22a70438a", // Your specific chatflow ID
+            apiHost: "https://cdoiii-finalai.hf.space",          // Your API host
+            theme: {
+                button: {
+                    show: false // Hide the default Flowise button
+                },
+                chatWindow: {
+                    // Optional: You can customize the chat window further if needed
+                    // title: "AI Assistant",
+                    // welcomeMessage: "Hello! How can I help you today?",
+                }
+            }
+        });
+
+        // Make the Chatbot object globally accessible so other scripts can use it
+        // This is one way to allow the button script to call Chatbot.open()
+        window.FlowiseChatbot = Chatbot;
+    </script>
+
+    <script>
+        // Wait for the DOM to be fully loaded before attaching event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get the custom button element by its ID
+            const customButton = document.getElementById('customChatbotButton');
+
+            // Check if the button exists on the page
+            if (customButton) {
+                // Add an event listener for click events on the button
+                customButton.addEventListener('click', () => {
+                    // Check if the FlowiseChatbot object is available on the window (initialized by the script above)
+                    if (window.FlowiseChatbot) {
+                        // If available, call the open() method to display the chatbot window
+                        window.FlowiseChatbot.open();
+                    } else {
+                        // Log an error to the console if the chatbot object isn't found
+                        // This might indicate an issue with the chatbot initialization script
+                        console.error('Flowise Chatbot is not initialized or not available on window.FlowiseChatbot.');
+                    }
+                });
+            }
+        });
+    </script>
+
+</body>
 </html>
